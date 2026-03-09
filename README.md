@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Manna
+
+B2B euro savings account for European companies. Companies earn yield on idle cash without touching crypto — just SEPA transfers and euros.
+
+Built for the [Hack with YO](https://dorahacks.io) hackathon.
+
+## How it works
+
+1. Company transfers EUR via SEPA to a virtual IBAN
+2. Funds are converted to EURC and deposited into YO's yoEUR vault on Base
+3. Yield accrues — displayed as an Annual Return in euros
+4. Funds are withdrawn back to the company's bank account on demand
+
+Crypto is fully abstracted. Users see euros, bank transfers, and interest rates — nothing else.
+
+## Tech Stack
+
+| Layer | Choice |
+|-------|--------|
+| Framework | Next.js 16 (app router) + TypeScript |
+| Vault SDK | `@yo-protocol/react` + `@yo-protocol/core` |
+| Blockchain | wagmi v2 + viem v2, Base (chain 8453) |
+| Wallets | Privy embedded smart wallets (invisible to user) |
+| Data fetching | TanStack Query |
+| Styling | Tailwind CSS (mobile-first) |
+| PWA | next-pwa |
 
 ## Getting Started
 
-First, run the development server:
+**Prerequisites:** Node 18+, a [Privy](https://dashboard.privy.io) app with email login + embedded wallets enabled on Base.
 
 ```bash
+# Install dependencies
+npm install
+
+# Configure environment
+cp .env.local.example .env.local
+# Set NEXT_PUBLIC_PRIVY_APP_ID in .env.local
+
+# Run dev server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# → http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Structure
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+src/
+├── app/
+│   ├── login/              Email + OTP login (Privy)
+│   └── (app)/
+│       ├── dashboard/      Balance, yield stats, activity feed
+│       ├── transfers/      Deposit (simulated SEPA) + Withdraw
+│       ├── card/           Virtual spending card
+│       └── settings/       Company info + logout
+├── components/             Feature-grouped UI components
+├── hooks/                  useEurBalance, useYieldStats, useTransactionHistory, useSimulatedSepa
+└── lib/                    providers, wagmi config, constants, formatters, mock data
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Key Addresses (Base mainnet)
 
-## Learn More
+| Contract | Address |
+|----------|---------|
+| yoEUR vault | `0x50c749ae210d3977adc824ae11f3c7fd10c871e9` |
+| EURC token | `0x60a3E35Cc302bFA44Cb288Bc5a4F316Fdb1adb42` |
 
-To learn more about Next.js, take a look at the following resources:
+## Demo Note
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The demo wallet (Privy embedded wallet created on first login) must be pre-funded with EURC on Base before demoing deposits.
