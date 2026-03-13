@@ -26,7 +26,7 @@ export function AmountInput({ value, onChange, maxFloat, placeholder = "0.00", d
   };
 
   return (
-    <div className="relative bg-white border-2 border-gray-100 rounded-xl focus-within:border-[#c9a84c] transition-colors">
+    <div className="relative bg-white border-2 border-gray-100 rounded-xl focus-within:border-[#2d9f6f] transition-colors">
       <div className="flex items-center px-4 py-4">
         <span className="text-2xl font-light text-gray-400 mr-2">€</span>
         <input
@@ -36,13 +36,13 @@ export function AmountInput({ value, onChange, maxFloat, placeholder = "0.00", d
           onChange={handleChange}
           placeholder={placeholder}
           disabled={disabled}
-          className="flex-1 text-2xl font-bold text-[#0f1729] bg-transparent outline-none tabular placeholder-gray-200"
+          className="flex-1 text-2xl font-bold text-[#0d1321] bg-transparent outline-none tabular placeholder-gray-200"
         />
         {maxFloat != null && (
           <button
             type="button"
             onClick={setMax}
-            className="text-xs font-semibold text-[#c9a84c] bg-[#c9a84c]/10 px-2.5 py-1 rounded-lg"
+            className="text-xs font-semibold text-[#2d9f6f] bg-[#2d9f6f]/10 px-2.5 py-1 rounded-lg"
           >
             MAX
           </button>

@@ -20,7 +20,7 @@ export function CardTransactions() {
   return (
     <div className="mx-4 mt-3 bg-white rounded-xl shadow-sm overflow-hidden">
       <div className="px-4 py-3 border-b border-gray-50">
-        <h2 className="text-sm font-semibold text-[#0f1729]">Card Transactions</h2>
+        <h2 className="text-sm font-semibold text-[#0d1321]">Card Transactions</h2>
       </div>
       <ul>
         {CARD_TRANSACTIONS.map((tx, idx) => (
@@ -34,10 +34,10 @@ export function CardTransactions() {
               {CATEGORY_ICONS[tx.category] ?? "💳"}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-[#0f1729] truncate">{tx.merchant}</p>
+              <p className="text-sm font-medium text-[#0d1321] truncate">{tx.merchant}</p>
               <p className="text-xs text-gray-400">{formatDate(tx.date)}</p>
             </div>
-            <span className="text-sm font-semibold tabular text-[#0f1729] shrink-0">
+            <span className="text-sm font-semibold tabular text-[#0d1321] shrink-0">
               {formatEur(tx.amount)}
             </span>
           </li>

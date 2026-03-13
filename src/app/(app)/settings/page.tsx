@@ -28,11 +28,11 @@ export default function SettingsPage() {
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Company</p>
           </div>
           <div className="flex items-center gap-3 px-4 py-4">
-            <div className="w-12 h-12 rounded-xl bg-[#0f1729] flex items-center justify-center text-white font-bold text-lg">
+            <div className="w-12 h-12 rounded-xl bg-[#0d1321] flex items-center justify-center text-white font-bold text-lg">
               {COMPANY_PROFILE.name[0]}
             </div>
             <div>
-              <p className="text-sm font-bold text-[#0f1729]">{COMPANY_PROFILE.name}</p>
+              <p className="text-sm font-bold text-[#0d1321]">{COMPANY_PROFILE.name}</p>
               <p className="text-xs text-gray-400">{COMPANY_PROFILE.registration} · {COMPANY_PROFILE.country}</p>
             </div>
           </div>
@@ -47,7 +47,7 @@ export default function SettingsPage() {
             <Mail size={16} className="text-gray-400 shrink-0" />
             <div className="flex-1">
               <p className="text-[10px] text-gray-400">Email</p>
-              <p className="text-sm font-medium text-[#0f1729]">
+              <p className="text-sm font-medium text-[#0d1321]">
                 {user?.email?.address ?? COMPANY_PROFILE.email}
               </p>
             </div>

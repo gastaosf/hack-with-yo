@@ -17,7 +17,7 @@ export function ActivityFeed() {
   return (
     <div className="mx-4 mt-3 bg-white rounded-xl shadow-sm overflow-hidden">
       <div className="px-4 py-3 border-b border-gray-50">
-        <h2 className="text-sm font-semibold text-[#0f1729]">Recent Activity</h2>
+        <h2 className="text-sm font-semibold text-[#0d1321]">Recent Activity</h2>
       </div>
 
       {isLoading ? (
@@ -59,12 +59,12 @@ export function ActivityFeed() {
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-[#0f1729] truncate">{item.label}</p>
+                <p className="text-sm font-medium text-[#0d1321] truncate">{item.label}</p>
                 <p className="text-xs text-gray-400">{formatDate(item.date)}</p>
               </div>
               <span
                 className={`text-sm font-semibold tabular shrink-0 ${
-                  item.amountFloat >= 0 ? "text-green-600" : "text-[#0f1729]"
+                  item.amountFloat >= 0 ? "text-green-600" : "text-[#0d1321]"
                 }`}
               >
                 {item.amountFloat >= 0 ? "+" : ""}

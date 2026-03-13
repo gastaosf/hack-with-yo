@@ -11,10 +11,10 @@ export function BalanceCard() {
   const isLoading = balanceLoading || yieldLoading;
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-[#0f1729] px-6 pt-6 pb-8 text-white shadow-xl mx-4 mt-4">
+    <div className="relative overflow-hidden rounded-2xl bg-[#0d1321] px-6 pt-6 pb-8 text-white shadow-xl mx-4 mt-4">
       {/* Background decoration */}
       <div className="absolute -top-12 -right-12 w-48 h-48 rounded-full bg-white/5" />
-      <div className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full bg-[#c9a84c]/10" />
+      <div className="absolute -bottom-8 -left-8 w-32 h-32 rounded-full bg-[#2d9f6f]/10" />
 
       <div className="relative">
         <p className="text-xs font-medium text-white/50 tracking-widest uppercase mb-3">
@@ -33,10 +33,10 @@ export function BalanceCard() {
             </div>
             {apyPercent != null && (
               <div className="flex items-center gap-1.5 mt-3">
-                <TrendingUp size={13} className="text-[#c9a84c]" />
+                <TrendingUp size={13} className="text-[#2d9f6f]" />
                 <span className="text-sm text-white/60">
                   Earning{" "}
-                  <span className="text-[#c9a84c] font-semibold">
+                  <span className="text-[#2d9f6f] font-semibold">
                     {formatPercentage(apyPercent)}
                   </span>{" "}
                   annual return

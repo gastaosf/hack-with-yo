@@ -15,7 +15,7 @@ export function YieldSummary() {
         {isLoading ? (
           <div className="skeleton h-6 w-16" />
         ) : (
-          <p className="text-xl font-bold text-[#0f1729] tabular">
+          <p className="text-xl font-bold text-[#0d1321] tabular">
             {apyPercent != null ? formatPercentage(apyPercent) : "—"}
           </p>
         )}
@@ -29,7 +29,7 @@ export function YieldSummary() {
         {isLoading ? (
           <div className="skeleton h-6 w-20" />
         ) : (
-          <p className="text-xl font-bold text-[#0f1729] tabular">
+          <p className="text-xl font-bold text-[#0d1321] tabular">
             {formatEur(yieldEarnedFloat)}
           </p>
         )}

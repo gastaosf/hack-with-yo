@@ -37,7 +37,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-[#0f1729] px-6">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#0d1321] px-6">
       {/* Logo */}
       <div className="mb-12 text-center">
         <div className="text-4xl font-bold text-white tracking-widest mb-1">manna</div>
@@ -49,7 +49,7 @@ export default function LoginPage() {
         {step === "email" ? (
           <form onSubmit={handleSendCode} className="flex flex-col gap-4">
             <div>
-              <h2 className="text-lg font-semibold text-[#0f1729] mb-1">Sign in</h2>
+              <h2 className="text-lg font-semibold text-[#0d1321] mb-1">Sign in</h2>
               <p className="text-sm text-gray-400">Enter your company email address</p>
             </div>
             <input
@@ -58,13 +58,13 @@ export default function LoginPage() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="name@company.com"
               required
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-[#0f1729] placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/40 focus:border-[#c9a84c] transition"
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-[#0d1321] placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2d9f6f]/40 focus:border-[#2d9f6f] transition"
             />
             {error && <p className="text-xs text-red-500">{error}</p>}
             <button
               type="submit"
               disabled={!email || isPending}
-              className="w-full bg-[#0f1729] text-white rounded-xl py-3 text-sm font-semibold hover:bg-[#1a2744] disabled:opacity-40 transition-colors"
+              className="w-full bg-[#0d1321] text-white rounded-xl py-3 text-sm font-semibold hover:bg-[#1a2240] disabled:opacity-40 transition-colors"
             >
               {isPending ? "Sending..." : "Continue"}
             </button>
@@ -72,9 +72,9 @@ export default function LoginPage() {
         ) : (
           <form onSubmit={handleVerifyCode} className="flex flex-col gap-4">
             <div>
-              <h2 className="text-lg font-semibold text-[#0f1729] mb-1">Check your email</h2>
+              <h2 className="text-lg font-semibold text-[#0d1321] mb-1">Check your email</h2>
               <p className="text-sm text-gray-400">
-                We sent a 6-digit code to <span className="font-medium text-[#0f1729]">{email}</span>
+                We sent a 6-digit code to <span className="font-medium text-[#0d1321]">{email}</span>
               </p>
             </div>
             <input
@@ -85,13 +85,13 @@ export default function LoginPage() {
               maxLength={6}
               inputMode="numeric"
               required
-              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-2xl text-center text-[#0f1729] font-bold tracking-[0.5em] placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-[#c9a84c]/40 focus:border-[#c9a84c] transition"
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-2xl text-center text-[#0d1321] font-bold tracking-[0.5em] placeholder-gray-200 focus:outline-none focus:ring-2 focus:ring-[#2d9f6f]/40 focus:border-[#2d9f6f] transition"
             />
             {error && <p className="text-xs text-red-500">{error}</p>}
             <button
               type="submit"
               disabled={code.length < 6 || isPending}
-              className="w-full bg-[#0f1729] text-white rounded-xl py-3 text-sm font-semibold hover:bg-[#1a2744] disabled:opacity-40 transition-colors"
+              className="w-full bg-[#0d1321] text-white rounded-xl py-3 text-sm font-semibold hover:bg-[#1a2240] disabled:opacity-40 transition-colors"
             >
               {isPending ? "Verifying..." : "Sign in"}
             </button>

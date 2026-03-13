@@ -60,16 +60,16 @@ export default function WithdrawPage() {
             <CheckCircle2 size={40} className="text-green-500" />
           </div>
           <div className="text-center">
-            <h2 className="text-xl font-bold text-[#0f1729]">Transfer on its way</h2>
+            <h2 className="text-xl font-bold text-[#0d1321]">Transfer on its way</h2>
             <p className="text-sm text-gray-400 mt-2 px-4">
               €{parseFloat(amount).toLocaleString("en-IE", { minimumFractionDigits: 2 })} will arrive in{" "}
-              <span className="font-medium text-[#0f1729]">Commerzbank ****{LINKED_BANK.lastFour}</span>{" "}
+              <span className="font-medium text-[#0d1321]">Commerzbank ****{LINKED_BANK.lastFour}</span>{" "}
               within 1–2 business days.
             </p>
           </div>
           <button
             onClick={() => { setWStep("idle"); setAmount(""); router.replace("/dashboard"); }}
-            className="w-full bg-[#0f1729] text-white rounded-xl py-4 text-sm font-semibold"
+            className="w-full bg-[#0d1321] text-white rounded-xl py-4 text-sm font-semibold"
           >
             Back to Dashboard
           </button>
@@ -83,7 +83,7 @@ export default function WithdrawPage() {
       <div className="page-enter">
         <PageHeader title="Processing" />
         <div className="px-4 pt-16 flex flex-col items-center gap-6">
-          <Loader2 size={36} className="text-[#0f1729] animate-spin" />
+          <Loader2 size={36} className="text-[#0d1321] animate-spin" />
           <p className="text-sm text-gray-500">
             {wStep === "confirming" ? "Initiating transfer..." : "Confirming on network..."}
           </p>
@@ -97,9 +97,9 @@ export default function WithdrawPage() {
       <div className="page-enter">
         <PageHeader title="Withdrawal Failed" showBack />
         <div className="px-4 pt-12 flex flex-col items-center gap-4 text-center">
-          <p className="text-lg font-bold text-[#0f1729]">Something went wrong</p>
+          <p className="text-lg font-bold text-[#0d1321]">Something went wrong</p>
           <p className="text-sm text-gray-400">{error ?? "Please try again"}</p>
-          <button onClick={() => { setWStep("idle"); setError(null); }} className="w-full bg-[#0f1729] text-white rounded-xl py-4 text-sm font-semibold mt-4">
+          <button onClick={() => { setWStep("idle"); setError(null); }} className="w-full bg-[#0d1321] text-white rounded-xl py-4 text-sm font-semibold mt-4">
             Try Again
           </button>
         </div>
@@ -112,12 +112,12 @@ export default function WithdrawPage() {
       <PageHeader title="Withdraw" showBack />
       <div className="px-4 pt-6 flex flex-col gap-4">
         <div>
-          <p className="text-base font-semibold text-[#0f1729] mb-1">How much would you like to withdraw?</p>
+          <p className="text-base font-semibold text-[#0d1321] mb-1">How much would you like to withdraw?</p>
           {balanceLoading ? (
             <div className="skeleton h-4 w-32" />
           ) : (
             <p className="text-sm text-gray-400">
-              Available: <span className="font-semibold text-[#0f1729]">{formatEur(balanceFloat)}</span>
+              Available: <span className="font-semibold text-[#0d1321]">{formatEur(balanceFloat)}</span>
             </p>
           )}
         </div>
@@ -136,11 +136,11 @@ export default function WithdrawPage() {
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Sending to</p>
           </div>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#0f1729]/5 flex items-center justify-center">
-              <Building2 size={18} className="text-[#0f1729]" />
+            <div className="w-10 h-10 rounded-full bg-[#0d1321]/5 flex items-center justify-center">
+              <Building2 size={18} className="text-[#0d1321]" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-[#0f1729]">{LINKED_BANK.bank}</p>
+              <p className="text-sm font-semibold text-[#0d1321]">{LINKED_BANK.bank}</p>
               <p className="text-xs text-gray-400">****{LINKED_BANK.lastFour}</p>
             </div>
           </div>
@@ -155,7 +155,7 @@ export default function WithdrawPage() {
         <button
           disabled={!isAmountValid || balanceLoading}
           onClick={handleWithdraw}
-          className="w-full bg-[#0f1729] text-white rounded-xl py-4 text-sm font-semibold disabled:opacity-30 transition-opacity active:scale-[0.98]"
+          className="w-full bg-[#0d1321] text-white rounded-xl py-4 text-sm font-semibold disabled:opacity-30 transition-opacity active:scale-[0.98]"
         >
           Withdraw {amount ? `€${parseFloat(amount).toLocaleString("en-IE", { minimumFractionDigits: 2 })}` : ""}
         </button>
