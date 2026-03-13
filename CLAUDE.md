@@ -42,10 +42,11 @@ No test suite configured.
 
 | Token | Value |
 |-------|-------|
-| Primary (navy) | `#0f1729` |
-| Accent (gold) | `#c9a84c` |
-| Background | `#f8f9fc` |
-| Font | system-ui / Inter |
+| Primary (midnight) | `#0d1321` |
+| Accent (emerald) | `#2d9f6f` |
+| Accent (mint) | `#4ec99b` |
+| Background | `#fafaf5` |
+| Font | Outfit (Google Fonts) |
 
 Tone: professional banking product, not DeFi. No playful language, no crypto jargon.
 

@@ -39,14 +39,14 @@ export default function TransfersPage() {
               <Icon size={20} className={iconColor} />
             </div>
             <div className="flex-1">
-              <p className="text-sm font-semibold text-[#0f1729]">{title}</p>
+              <p className="text-sm font-semibold text-[#0d1321]">{title}</p>
               <p className="text-xs text-gray-400 mt-0.5">{description}</p>
             </div>
             <ChevronRight size={17} className="text-gray-300" />
           </Link>
         ))}
 
-        <div className="mt-4 p-4 bg-[#0f1729]/5 rounded-xl">
+        <div className="mt-4 p-4 bg-[#0d1321]/5 rounded-xl">
           <p className="text-xs text-gray-500 leading-relaxed">
             Deposits are allocated to your savings account automatically. Withdrawals are
             transferred to your registered bank account within 1–2 business days.

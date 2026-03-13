@@ -27,18 +27,18 @@ export function BottomNav() {
             >
               <Icon
                 size={22}
-                className={active ? "text-[#0f1729]" : "text-gray-400"}
+                className={active ? "text-[#0d1321]" : "text-gray-400"}
                 strokeWidth={active ? 2.2 : 1.8}
               />
               <span
                 className={`text-[10px] font-medium tracking-wide ${
-                  active ? "text-[#0f1729]" : "text-gray-400"
+                  active ? "text-[#0d1321]" : "text-gray-400"
                 }`}
               >
                 {label}
               </span>
               {active && (
-                <span className="absolute bottom-0 h-0.5 w-8 rounded-full bg-[#c9a84c]" />
+                <span className="absolute bottom-0 h-0.5 w-8 rounded-full bg-[#2d9f6f]" />
               )}
             </Link>
           );

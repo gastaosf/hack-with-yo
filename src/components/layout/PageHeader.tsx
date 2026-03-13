@@ -21,11 +21,11 @@ export function PageHeader({ title, showBack, right }: PageHeaderProps) {
             className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-gray-100 transition-colors"
             aria-label="Go back"
           >
-            <ArrowLeft size={20} className="text-[#0f1729]" />
+            <ArrowLeft size={20} className="text-[#0d1321]" />
           </button>
         )}
       </div>
-      <h1 className="text-[15px] font-semibold text-[#0f1729] tracking-tight">{title}</h1>
+      <h1 className="text-[15px] font-semibold text-[#0d1321] tracking-tight">{title}</h1>
       <div className="w-10 flex justify-end">{right}</div>
     </header>
   );

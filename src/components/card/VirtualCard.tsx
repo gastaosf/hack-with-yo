@@ -8,29 +8,60 @@ interface VirtualCardProps {
   frozen: boolean;
 }
 
+// Falling particles — fixed positions so they're stable (no random on each render)
+const PARTICLES = [
+  { x: 72, y: 18, r: 7 },
+  { x: 82, y: 32, r: 9 },
+  { x: 65, y: 44, r: 6 },
+  { x: 78, y: 58, r: 11 },
+  { x: 86, y: 28, r: 5 },
+  { x: 58, y: 22, r: 4 },
+  { x: 90, y: 50, r: 8 },
+  { x: 70, y: 68, r: 13 },
+];
+
 export function VirtualCard({ frozen }: VirtualCardProps) {
   const [showCvv, setShowCvv] = useState(false);
 
   return (
     <div className="relative card-3d mx-4 mt-4">
-      {/* Card body */}
       <div
         className="relative overflow-hidden rounded-2xl p-5 shadow-2xl"
         style={{
           background: frozen
-            ? "linear-gradient(135deg, #4a5568 0%, #2d3748 100%)"
-            : "linear-gradient(135deg, #0f1729 0%, #1a2744 60%, #2a3a5c 100%)",
+            ? "linear-gradient(135deg, #374151 0%, #1f2937 100%)"
+            : "linear-gradient(135deg, #0d1321 0%, #1a2240 70%, #0f2a1e 100%)",
           minHeight: 200,
           transition: "background 0.5s ease",
         }}
       >
-        {/* Background orbs */}
-        <div className="absolute -top-8 -right-8 w-40 h-40 rounded-full opacity-10 bg-[#c9a84c]" />
-        <div className="absolute -bottom-10 -left-10 w-36 h-36 rounded-full opacity-5 bg-white" />
+        {/* Falling particles SVG background */}
+        {!frozen && (
+          <svg
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            {PARTICLES.map((p, i) => (
+              <circle
+                key={i}
+                cx={p.x}
+                cy={p.y}
+                r={p.r / 10}
+                fill="#2d9f6f"
+                opacity={0.12 + (i % 3) * 0.05}
+              />
+            ))}
+            {/* Subtle diagonal line accent */}
+            <line x1="50" y1="0" x2="110" y2="80" stroke="#2d9f6f" strokeWidth="0.3" opacity="0.08" />
+            <line x1="60" y1="0" x2="120" y2="80" stroke="#4ec99b" strokeWidth="0.2" opacity="0.06" />
+          </svg>
+        )}
 
         {/* Frozen overlay */}
         {frozen && (
-          <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-[#2d3748]/80 backdrop-blur-sm z-10">
+          <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-[#1f2937]/80 backdrop-blur-sm z-10">
             <div className="text-center text-white">
               <div className="text-4xl mb-2">❄️</div>
               <p className="text-sm font-semibold">Card Frozen</p>
@@ -41,17 +72,24 @@ export function VirtualCard({ frozen }: VirtualCardProps) {
         <div className="relative z-0">
           {/* Top row */}
           <div className="flex justify-between items-start">
-            <div className="text-white text-base font-bold tracking-widest">manna</div>
-            <div className="w-10 h-7 rounded-sm bg-[#c9a84c]/80 flex items-center justify-center">
-              <div className="w-7 h-5 rounded-full border border-[#c9a84c]/30" />
+            <div className="text-white text-base font-semibold tracking-[0.18em]">manna</div>
+            {/* Emerald chip accent (top-right) */}
+            <div
+              className="w-10 h-7 rounded-sm flex items-center justify-center"
+              style={{ background: "linear-gradient(135deg, #2d9f6f 0%, #4ec99b 100%)" }}
+            >
+              <div className="w-7 h-4 rounded-sm border border-white/20" />
             </div>
           </div>
 
-          {/* Chip */}
-          <div className="mt-6 w-10 h-7 rounded bg-[#c9a84c]/90 flex items-center justify-center">
-            <div className="grid grid-cols-2 gap-0.5 opacity-50">
+          {/* EMV Chip */}
+          <div
+            className="mt-6 w-10 h-7 rounded flex items-center justify-center"
+            style={{ background: "linear-gradient(135deg, #2d9f6f 0%, #1a6b47 100%)" }}
+          >
+            <div className="grid grid-cols-2 gap-0.5 opacity-60">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="w-2 h-2 bg-[#0f1729]/60 rounded-sm" />
+                <div key={i} className="w-2 h-2 bg-[#0d1321]/50 rounded-sm" />
               ))}
             </div>
           </div>

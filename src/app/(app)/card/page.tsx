@@ -68,11 +68,11 @@ export default function CardPage() {
       <div className="mx-4 mt-3 bg-white rounded-xl p-4 shadow-sm">
         <div className="flex justify-between items-center py-2 border-b border-gray-50">
           <span className="text-xs text-gray-400">Card network</span>
-          <span className="text-xs font-semibold text-[#0f1729]">{CARD_DETAILS.network}</span>
+          <span className="text-xs font-semibold text-[#0d1321]">{CARD_DETAILS.network}</span>
         </div>
         <div className="flex justify-between items-center py-2 border-b border-gray-50">
           <span className="text-xs text-gray-400">Card type</span>
-          <span className="text-xs font-semibold text-[#0f1729]">Virtual debit</span>
+          <span className="text-xs font-semibold text-[#0d1321]">Virtual debit</span>
         </div>
         <div className="flex justify-between items-center py-2">
           <span className="text-xs text-gray-400">Status</span>

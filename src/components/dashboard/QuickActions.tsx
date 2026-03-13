@@ -21,7 +21,7 @@ export function QuickActions() {
           <div className={`w-10 h-10 rounded-full flex items-center justify-center ${color}`}>
             <Icon size={18} />
           </div>
-          <span className="text-xs font-medium text-[#0f1729]">{label}</span>
+          <span className="text-xs font-medium text-[#0d1321]">{label}</span>
         </Link>
       ))}
     </div>
