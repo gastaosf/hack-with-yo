@@ -1,3 +1,5 @@
+'use client';
+
 import { useState, useCallback } from "react";
 import { useDeposit } from "@yo-protocol/react";
 import { YOEUR_VAULT, EURC_ADDRESS, CHAIN_ID } from "../constants";

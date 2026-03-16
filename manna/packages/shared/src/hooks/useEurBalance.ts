@@ -1,3 +1,5 @@
+'use client';
+
 import { useAccount } from "wagmi";
 import { useUserPosition } from "@yo-protocol/react";
 import { YOEUR_VAULT } from "../constants";

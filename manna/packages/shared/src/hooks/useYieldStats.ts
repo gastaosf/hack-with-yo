@@ -1,3 +1,5 @@
+'use client';
+
 import { useAccount } from "wagmi";
 import { useUserPerformance, useYoClient } from "@yo-protocol/react";
 import { useQuery } from "@tanstack/react-query";
