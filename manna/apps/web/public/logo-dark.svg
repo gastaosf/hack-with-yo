@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40" fill="none">
+  <!-- Falling particles symbol (emerald, for dark backgrounds) -->
+  <circle cx="18.8" cy="12.2" r="2.8" fill="#4ec99b" opacity="0.70"/>
+  <circle cx="17.9" cy="17.2" r="3.8" fill="#2d9f6f" opacity="0.82"/>
+  <circle cx="17.0" cy="23.2" r="5.0" fill="#2d9f6f" opacity="0.92"/>
+  <circle cx="15.9" cy="30.4" r="6.8" fill="#2d9f6f" opacity="1.0"/>
+
+  <!-- Wordmark (ivory on dark) -->
+  <text
+    x="32"
+    y="27"
+    font-family="Outfit, -apple-system, sans-serif"
+    font-size="22"
+    font-weight="500"
+    letter-spacing="3.3"
+    fill="#fafaf5"
+  >manna</text>
+</svg>
