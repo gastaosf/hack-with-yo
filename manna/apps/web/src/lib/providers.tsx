@@ -25,8 +25,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     >
       <QueryClientProvider client={queryClient}>
         <WagmiProvider config={wagmiConfig}>
-          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-          <YieldProvider defaultSlippageBps={50} {...({} as any)}>
+          <YieldProvider defaultSlippageBps={50}>
             {children}
           </YieldProvider>
         </WagmiProvider>
