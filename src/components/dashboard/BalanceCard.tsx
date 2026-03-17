@@ -31,7 +31,7 @@ export function BalanceCard() {
             <div className="text-4xl font-bold tabular tracking-tight">
               {formatEur(balanceFloat)}
             </div>
-            {apyPercent != null && (
+            {apyPercent != null && balanceFloat > 0 && (
               <div className="flex items-center gap-1.5 mt-3">
                 <TrendingUp size={13} className="text-[#2d9f6f]" />
                 <span className="text-sm text-white/60">

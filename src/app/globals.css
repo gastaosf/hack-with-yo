@@ -73,6 +73,15 @@ body {
   transform: perspective(800px) rotateX(4deg) rotateY(-5deg) scale(1.01);
 }
 
+/* Fade-in for toasts */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translate(-50%, -8px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
 /* Tabular numbers for financial figures */
 .tabular {
   font-variant-numeric: tabular-nums;

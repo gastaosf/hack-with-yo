@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { YieldProvider } from "@yo-protocol/react";
 import { base } from "viem/chains";
 import { wagmiConfig } from "./wagmi-config";
+import { CompanyProfileProvider } from "@/hooks/useCompanyProfile";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,6 +23,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
           ethereum: {
             createOnLogin: "users-without-wallets",
           },
+          showWalletUIs: false,
         },
         defaultChain: base,
         supportedChains: [base],
@@ -35,7 +37,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
       <QueryClientProvider client={queryClient}>
         <WagmiProvider config={wagmiConfig}>
           <YieldProvider defaultSlippageBps={50}>
-            {children}
+            <CompanyProfileProvider>
+              {children}
+            </CompanyProfileProvider>
           </YieldProvider>
         </WagmiProvider>
       </QueryClientProvider>

@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import { useDeposit } from "@yo-protocol/react";
 import { YOEUR_VAULT, EURC_ADDRESS, CHAIN_ID } from "@/lib/constants";
 import { parseEurAmount } from "@/lib/format";
+import { sanitizeError } from "@/lib/errors";
 
 type SepaStep =
   | "idle"
@@ -31,7 +32,7 @@ export function useSimulatedSepa() {
       setStep("complete");
     },
     onError: (err) => {
-      setError(err.message ?? "Transfer failed");
+      setError(sanitizeError(err));
       setStep("error");
     },
   });
@@ -58,7 +59,7 @@ export function useSimulatedSepa() {
         chainId: CHAIN_ID,
       });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Transfer failed");
+      setError(sanitizeError(err));
       setStep("error");
     }
   }, [amount, deposit]);

@@ -8,6 +8,7 @@ import { useEurBalance } from "@/hooks/useEurBalance";
 import { useRedeem } from "@yo-protocol/react";
 import { YOEUR_VAULT, LINKED_BANK } from "@/lib/constants";
 import { formatEur } from "@/lib/format";
+import { sanitizeError } from "@/lib/errors";
 import { CheckCircle2, Loader2, Building2 } from "lucide-react";
 
 type WithdrawStep = "idle" | "confirming" | "submitting" | "complete" | "error";
@@ -29,7 +30,7 @@ export default function WithdrawPage() {
     },
     onConfirmed: () => setWStep("complete"),
     onError: (err) => {
-      setError(err.message ?? "Withdrawal failed");
+      setError(sanitizeError(err));
       setWStep("error");
     },
   });
@@ -44,7 +45,7 @@ export default function WithdrawPage() {
       const sharesToRedeem = BigInt(Math.floor(sharesNum * proportion));
       await redeem(sharesToRedeem);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Withdrawal failed");
+      setError(sanitizeError(err));
       setWStep("error");
     }
   }, [amount, balanceFloat, sharesRaw, redeem]);
