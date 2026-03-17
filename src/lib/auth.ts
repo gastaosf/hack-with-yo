@@ -1,0 +1,19 @@
+import { PrivyClient } from "@privy-io/server-auth";
+
+const privy = new PrivyClient(
+  process.env.NEXT_PUBLIC_PRIVY_APP_ID!,
+  process.env.PRIVY_APP_SECRET!
+);
+
+export async function getAuthenticatedUserId(
+  request: Request
+): Promise<string> {
+  const authHeader = request.headers.get("Authorization");
+  if (!authHeader?.startsWith("Bearer ")) {
+    throw new Error("Missing or invalid Authorization header");
+  }
+
+  const token = authHeader.slice(7);
+  const { userId } = await privy.verifyAuthToken(token);
+  return userId;
+}

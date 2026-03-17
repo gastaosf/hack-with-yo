@@ -48,7 +48,7 @@ export default function DepositPage() {
   // Step 1: Amount entry
   if (step === "idle") {
     return (
-      <div className="page-enter">
+      <div className="page-enter pb-24">
         <PageHeader title="Deposit" showBack />
         <div className="px-4 pt-6 flex flex-col gap-4">
           <div>
@@ -56,6 +56,8 @@ export default function DepositPage() {
             <p className="text-sm text-gray-400">Funds will start earning interest immediately after receipt.</p>
           </div>
           <AmountInput value={amount} onChange={setAmount} />
+        </div>
+        <div className="sticky bottom-0 bg-gradient-to-t from-[#fafaf5] via-[#fafaf5] pt-4 pb-6 px-4">
           <button
             disabled={!amount || parseFloat(amount) <= 0}
             onClick={() => startDeposit(amount)}
@@ -71,7 +73,7 @@ export default function DepositPage() {
   // Step 2: SEPA bank details
   if (step === "showing_details") {
     return (
-      <div className="page-enter">
+      <div className="page-enter pb-24">
         <PageHeader title="Bank Transfer Details" showBack />
         <div className="px-4 pt-4 flex flex-col gap-4">
           <div className="bg-[#0d1321] rounded-xl p-4 text-white">
@@ -96,7 +98,8 @@ export default function DepositPage() {
               ⚠️ Please include the reference code exactly as shown. This ensures your deposit is credited automatically.
             </p>
           </div>
-
+        </div>
+        <div className="sticky bottom-0 bg-gradient-to-t from-[#fafaf5] via-[#fafaf5] pt-4 pb-6 px-4">
           <button
             onClick={confirmTransferSent}
             className="w-full bg-[#0d1321] text-white rounded-xl py-4 text-sm font-semibold active:scale-[0.98]"

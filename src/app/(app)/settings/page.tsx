@@ -1,20 +1,93 @@
 "use client";
 
+import { useState } from "react";
 import { usePrivy } from "@privy-io/react-auth";
 import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { COMPANY_PROFILE } from "@/lib/mock-data";
-import { Building2, Mail, LogOut, Shield, ChevronRight } from "lucide-react";
-import { useAccount } from "wagmi";
+import { useCompanyProfile } from "@/hooks/useCompanyProfile";
+import { Building2, Mail, LogOut, Shield, Pencil, Check, X } from "lucide-react";
+
+function EditableRow({
+  icon: Icon,
+  label,
+  value,
+  onSave,
+}: {
+  icon: typeof Mail;
+  label: string;
+  value: string;
+  onSave?: (val: string) => void;
+}) {
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState(value);
+
+  const handleSave = () => {
+    if (onSave && draft.trim()) {
+      onSave(draft.trim());
+    }
+    setEditing(false);
+  };
+
+  const handleCancel = () => {
+    setDraft(value);
+    setEditing(false);
+  };
+
+  return (
+    <div className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50 last:border-0">
+      <Icon size={16} className="text-gray-400 shrink-0" />
+      <div className="flex-1 min-w-0">
+        <p className="text-[10px] text-gray-400">{label}</p>
+        {editing ? (
+          <div className="flex items-center gap-2 mt-0.5">
+            <input
+              autoFocus
+              value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              className="text-sm font-medium text-[#0d1321] bg-gray-50 rounded px-2 py-1 flex-1 min-w-0 focus:outline-none focus:ring-1 focus:ring-[#2d9f6f]"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") handleSave();
+                if (e.key === "Escape") handleCancel();
+              }}
+            />
+            <button onClick={handleSave} className="p-1 text-green-500">
+              <Check size={16} />
+            </button>
+            <button onClick={handleCancel} className="p-1 text-gray-400">
+              <X size={16} />
+            </button>
+          </div>
+        ) : (
+          <p className="text-sm font-medium text-[#0d1321]">{value}</p>
+        )}
+      </div>
+      {onSave && !editing && (
+        <button onClick={() => setEditing(true)} className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
+          <Pencil size={14} className="text-gray-400" />
+        </button>
+      )}
+    </div>
+  );
+}
 
 export default function SettingsPage() {
   const { logout, user } = usePrivy();
-  const { address } = useAccount();
   const router = useRouter();
+  const { profile, saveProfile, isDemoAccount } = useCompanyProfile();
 
   const handleLogout = async () => {
     await logout();
     router.replace("/login");
+  };
+
+  const displayName = profile?.name ?? "Your Company";
+  const displayEmail = profile?.email ?? user?.email?.address ?? "";
+  const displayRegistration = profile?.registration ?? "";
+  const displayCountry = profile?.country ?? "";
+
+  const updateField = (field: string, value: string) => {
+    if (!profile) return;
+    saveProfile({ ...profile, [field]: value });
   };
 
   return (
@@ -29,11 +102,20 @@ export default function SettingsPage() {
           </div>
           <div className="flex items-center gap-3 px-4 py-4">
             <div className="w-12 h-12 rounded-xl bg-[#0d1321] flex items-center justify-center text-white font-bold text-lg">
-              {COMPANY_PROFILE.name[0]}
+              {displayName[0]}
             </div>
-            <div>
-              <p className="text-sm font-bold text-[#0d1321]">{COMPANY_PROFILE.name}</p>
-              <p className="text-xs text-gray-400">{COMPANY_PROFILE.registration} · {COMPANY_PROFILE.country}</p>
+            <div className="flex-1 min-w-0">
+              {isDemoAccount ? (
+                <>
+                  <p className="text-sm font-bold text-[#0d1321]">{displayName}</p>
+                  <p className="text-xs text-gray-400">{displayRegistration} · {displayCountry}</p>
+                </>
+              ) : (
+                <>
+                  <p className="text-sm font-bold text-[#0d1321]">{displayName}</p>
+                  <p className="text-xs text-gray-400">{displayRegistration} · {displayCountry}</p>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -43,20 +125,23 @@ export default function SettingsPage() {
           <div className="px-4 py-3 border-b border-gray-50">
             <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider">Account</p>
           </div>
-          <div className="flex items-center gap-3 px-4 py-3.5 border-b border-gray-50">
-            <Mail size={16} className="text-gray-400 shrink-0" />
-            <div className="flex-1">
-              <p className="text-[10px] text-gray-400">Email</p>
-              <p className="text-sm font-medium text-[#0d1321]">
-                {user?.email?.address ?? COMPANY_PROFILE.email}
-              </p>
-            </div>
-          </div>
+          <EditableRow
+            icon={Building2}
+            label="Company Name"
+            value={displayName}
+            onSave={isDemoAccount ? undefined : (val) => updateField("name", val)}
+          />
+          <EditableRow
+            icon={Mail}
+            label="Email"
+            value={displayEmail}
+            onSave={isDemoAccount ? undefined : (val) => updateField("email", val)}
+          />
           <div className="flex items-center gap-3 px-4 py-3.5">
             <Shield size={16} className="text-gray-400 shrink-0" />
             <div className="flex-1">
               <p className="text-[10px] text-gray-400">KYB Status</p>
-              <p className="text-sm font-medium text-green-600">Verified ✓</p>
+              <p className="text-sm font-medium text-green-600">Verified</p>
             </div>
           </div>
         </div>

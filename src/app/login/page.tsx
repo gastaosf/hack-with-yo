@@ -21,7 +21,7 @@ export default function LoginPage() {
     if (authenticated) router.replace("/dashboard");
   }, [authenticated, router]);
 
-  const isPending = state.status === "sending-code" || state.status === "awaiting-code-input";
+  const isPending = state.status === "sending-code" || state.status === "submitting-code";
 
   const handleSendCode = async (e: React.FormEvent) => {
     e.preventDefault();

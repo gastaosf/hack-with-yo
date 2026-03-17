@@ -6,6 +6,7 @@ import { CARD_DETAILS } from "@/lib/mock-data";
 
 interface VirtualCardProps {
   frozen: boolean;
+  holderName?: string;
 }
 
 // Falling particles — fixed positions so they're stable (no random on each render)
@@ -20,7 +21,7 @@ const PARTICLES = [
   { x: 70, y: 68, r: 13 },
 ];
 
-export function VirtualCard({ frozen }: VirtualCardProps) {
+export function VirtualCard({ frozen, holderName }: VirtualCardProps) {
   const [showCvv, setShowCvv] = useState(false);
 
   return (
@@ -103,7 +104,7 @@ export function VirtualCard({ frozen }: VirtualCardProps) {
           <div className="mt-4 flex justify-between items-end">
             <div>
               <p className="text-[9px] text-white/40 uppercase tracking-widest mb-0.5">Card Holder</p>
-              <p className="text-xs text-white/80 font-medium">{CARD_DETAILS.holder}</p>
+              <p className="text-xs text-white/80 font-medium">{holderName ?? CARD_DETAILS.holder}</p>
             </div>
             <div className="text-right">
               <p className="text-[9px] text-white/40 uppercase tracking-widest mb-0.5">Expires</p>

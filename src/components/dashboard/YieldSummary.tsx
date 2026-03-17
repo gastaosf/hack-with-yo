@@ -1,10 +1,24 @@
 "use client";
 
 import { useYieldStats } from "@/hooks/useYieldStats";
+import { useEurBalance } from "@/hooks/useEurBalance";
 import { formatEur, formatPercentage } from "@/lib/format";
+import { Wallet } from "lucide-react";
 
 export function YieldSummary() {
   const { apyPercent, yieldEarnedFloat, isLoading } = useYieldStats();
+  const { balanceFloat, isLoading: balanceLoading } = useEurBalance();
+
+  if (!isLoading && !balanceLoading && balanceFloat === 0) {
+    return (
+      <div className="mx-4 mt-3 bg-white rounded-xl p-6 shadow-sm flex flex-col items-center gap-3">
+        <div className="w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center">
+          <Wallet size={20} className="text-gray-300" />
+        </div>
+        <p className="text-sm text-gray-400 text-center">Add funds to start earning</p>
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-2 gap-3 mx-4 mt-3">
