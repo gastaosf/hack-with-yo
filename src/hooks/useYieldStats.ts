@@ -22,14 +22,21 @@ export function useYieldStats() {
 
   const { performance: userPerf, isLoading: userLoading } = useUserPerformance(YOEUR_VAULT, address);
 
-  // APY from snapshot yield field (string values like "0.042")
+  // APY from snapshot yield field (already a percentage, e.g. "2.3683" = 2.37%)
   const yieldData = snapshot?.stats?.yield;
   const apyRaw = yieldData?.["30d"] ?? yieldData?.["7d"] ?? yieldData?.["1d"] ?? null;
-  const apyPercent = apyRaw != null ? parseFloat(String(apyRaw)) * 100 : null;
+  const baseApy = apyRaw != null ? parseFloat(String(apyRaw)) : null;
+
+  // Add incentive rewards (merklRewardYield is a separate field)
+  const incentiveApy = snapshot?.stats?.merklRewardYield != null
+    ? parseFloat(String(snapshot.stats.merklRewardYield))
+    : 0;
+
+  const apyPercent = baseApy != null ? baseApy + incentiveApy : null;
 
   // Yield earned from unrealized P&L (raw is string|number with 6 decimals)
   const yieldEarnedFloat = userPerf?.unrealized?.raw != null
-    ? parseFloat(String(userPerf.unrealized.raw)) / 1e6
+    ? Math.max(0, parseFloat(String(userPerf.unrealized.raw)) / 1e6)
     : 0;
 
   return {

@@ -36,13 +36,13 @@ export function AmountInput({ value, onChange, maxFloat, placeholder = "0.00", d
           onChange={handleChange}
           placeholder={placeholder}
           disabled={disabled}
-          className="flex-1 text-2xl font-bold text-[#0d1321] bg-transparent outline-none tabular placeholder-gray-200"
+          className="flex-1 min-w-0 text-2xl font-bold text-[#0d1321] bg-transparent outline-none tabular placeholder-gray-200"
         />
         {maxFloat != null && (
           <button
             type="button"
             onClick={setMax}
-            className="text-xs font-semibold text-[#2d9f6f] bg-[#2d9f6f]/10 px-2.5 py-1 rounded-lg"
+            className="shrink-0 ml-2 text-xs font-semibold text-[#2d9f6f] bg-[#2d9f6f]/10 px-2.5 py-1 rounded-lg"
           >
             MAX
           </button>

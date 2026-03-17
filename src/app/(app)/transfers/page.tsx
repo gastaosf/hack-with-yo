@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { ActivityFeed } from "@/components/dashboard/ActivityFeed";
 import { ArrowDownLeft, ArrowUpRight, ChevronRight } from "lucide-react";
 
 const options = [
@@ -52,6 +53,10 @@ export default function TransfersPage() {
             transferred to your registered bank account within 1–2 business days.
           </p>
         </div>
+      </div>
+
+      <div className="mt-2 pb-6">
+        <ActivityFeed />
       </div>
     </div>
   );
