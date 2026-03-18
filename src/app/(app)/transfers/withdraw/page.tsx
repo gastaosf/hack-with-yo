@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { AmountInput } from "@/components/transfers/AmountInput";
@@ -15,6 +16,7 @@ type WithdrawStep = "idle" | "confirming" | "submitting" | "complete" | "error";
 
 export default function WithdrawPage() {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const [amount, setAmount] = useState("");
   const [wStep, setWStep] = useState<WithdrawStep>("idle");
   const [txHash, setTxHash] = useState<string | null>(null);
@@ -28,7 +30,7 @@ export default function WithdrawPage() {
       setTxHash(hash);
       setWStep("submitting");
     },
-    onConfirmed: () => setWStep("complete"),
+    onConfirmed: () => { queryClient.invalidateQueries(); setWStep("complete"); },
     onError: (err) => {
       setError(sanitizeError(err));
       setWStep("error");

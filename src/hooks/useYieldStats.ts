@@ -12,7 +12,7 @@ export function useYieldStats() {
   const client = useYoClient();
 
   // Vault snapshot for APY — poll every 10s
-  const { data: snapshot, isLoading: snapshotLoading } = useQuery({
+  const { data: snapshot, isLoading: snapshotLoading, isError: snapshotError, refetch: refetchSnapshot } = useQuery({
     queryKey: ["yo-vault-snapshot", YOEUR_VAULT],
     queryFn: () => {
       if (!client) throw new Error("Client not available");
@@ -24,7 +24,7 @@ export function useYieldStats() {
   });
 
   // User performance — poll every 10s
-  const { data: userPerf, isLoading: userLoading } = useQuery({
+  const { data: userPerf, isLoading: userLoading, isError: perfError, refetch: refetchPerf } = useQuery({
     queryKey: ["yo-user-performance", YOEUR_VAULT, address],
     queryFn: () => {
       if (!client || !address) throw new Error("Client or address not available");
@@ -57,5 +57,7 @@ export function useYieldStats() {
     apyPercent,
     yieldEarnedFloat,
     isLoading: snapshotLoading || userLoading,
+    isError: snapshotError || perfError,
+    refetch: () => { refetchSnapshot(); refetchPerf(); },
   };
 }

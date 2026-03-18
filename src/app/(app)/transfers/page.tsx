@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { ActivityFeed } from "@/components/dashboard/ActivityFeed";
 import { ArrowDownLeft, ArrowUpRight, ChevronRight } from "lucide-react";
@@ -56,7 +55,7 @@ export default function TransfersPage() {
       </div>
 
       <div className="mt-2 pb-6">
-        <ActivityFeed />
+        <ActivityFeed paginated />
       </div>
     </div>
   );

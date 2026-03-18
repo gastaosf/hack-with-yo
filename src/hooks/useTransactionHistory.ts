@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useCallback } from "react";
 import { useAccount } from "wagmi";
 import { useUserHistory } from "@yo-protocol/react";
 import { formatUnits } from "viem";
@@ -12,14 +13,15 @@ export type TransactionItem = {
   amountFloat: number;
   date: Date;
   status: "confirmed";
+  txHash: string;
 };
 
-export function useTransactionHistory() {
-  const { address } = useAccount();
-  const { history, isLoading } = useUserHistory(YOEUR_VAULT, address, { limit: 20 });
+const PAGE_SIZE = 20;
 
-  // Debug: log raw YO history items to inspect tx.type values
-  console.log("[Manna] YO history items:", history);
+export function useTransactionHistory(options?: { paginated?: boolean }) {
+  const { address } = useAccount();
+  const [limit, setLimit] = useState(PAGE_SIZE);
+  const { history, isLoading, isError, refetch } = useUserHistory(YOEUR_VAULT, address, { limit });
 
   const items: TransactionItem[] = history.map((tx) => {
     const txType = String(tx.type).toLowerCase();
@@ -28,7 +30,6 @@ export function useTransactionHistory() {
     if (!isDeposit && !isWithdraw) {
       console.warn("[Manna] Unknown transaction type:", tx.type, tx);
     }
-    // Use formatted value from SDK when available, fallback to raw/1e6
     const amount = tx.assets?.formatted
       ? parseFloat(String(tx.assets.formatted))
       : parseFloat(formatUnits(BigInt(tx.assets?.raw ?? "0"), 6));
@@ -39,8 +40,15 @@ export function useTransactionHistory() {
       amountFloat: isDeposit ? amount : -amount,
       date: new Date(tx.blockTimestamp ? tx.blockTimestamp * 1000 : Date.now()),
       status: "confirmed" as const,
+      txHash: tx.transactionHash ?? "",
     };
   });
 
-  return { items, isLoading };
+  const hasMore = options?.paginated ? items.length >= limit : false;
+
+  const loadMore = useCallback(() => {
+    setLimit((prev) => prev + PAGE_SIZE);
+  }, []);
+
+  return { items, isLoading, isError, refetch, hasMore, loadMore };
 }
