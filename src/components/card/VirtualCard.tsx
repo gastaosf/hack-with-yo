@@ -74,29 +74,10 @@ export function VirtualCard({ frozen, holderName }: VirtualCardProps) {
           {/* Top row */}
           <div className="flex justify-between items-start">
             <div className="text-white text-base font-semibold tracking-[0.18em]">manna</div>
-            {/* Emerald chip accent (top-right) */}
-            <div
-              className="w-10 h-7 rounded-sm flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #2d9f6f 0%, #4ec99b 100%)" }}
-            >
-              <div className="w-7 h-4 rounded-sm border border-white/20" />
-            </div>
-          </div>
-
-          {/* EMV Chip */}
-          <div
-            className="mt-6 w-10 h-7 rounded flex items-center justify-center"
-            style={{ background: "linear-gradient(135deg, #2d9f6f 0%, #1a6b47 100%)" }}
-          >
-            <div className="grid grid-cols-2 gap-0.5 opacity-60">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="w-2 h-2 bg-[#0d1321]/50 rounded-sm" />
-              ))}
-            </div>
           </div>
 
           {/* Card number */}
-          <div className="mt-5 text-white/90 text-lg font-mono tracking-[0.2em]">
+          <div className="mt-14 text-white/90 text-lg font-mono tracking-[0.2em]">
             {CARD_DETAILS.number}
           </div>
 
