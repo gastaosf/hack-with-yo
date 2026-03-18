@@ -1,7 +1,9 @@
 "use client";
 
+import { useState, useCallback } from "react";
 import { useAccount } from "wagmi";
-import { useUserHistory } from "@yo-protocol/react";
+import { useYoClient } from "@yo-protocol/react";
+import { useQuery } from "@tanstack/react-query";
 import { formatUnits } from "viem";
 import { YOEUR_VAULT } from "@/lib/constants";
 
@@ -12,14 +14,27 @@ export type TransactionItem = {
   amountFloat: number;
   date: Date;
   status: "confirmed";
+  txHash: string;
 };
 
-export function useTransactionHistory() {
-  const { address } = useAccount();
-  const { history, isLoading } = useUserHistory(YOEUR_VAULT, address, { limit: 20 });
+const PAGE_SIZE = 20;
+const POLL_INTERVAL = 5_000;
 
-  // Debug: log raw YO history items to inspect tx.type values
-  console.log("[Manna] YO history items:", history);
+export function useTransactionHistory(options?: { paginated?: boolean }) {
+  const { address } = useAccount();
+  const client = useYoClient();
+  const [limit, setLimit] = useState(PAGE_SIZE);
+
+  const { data: history = [], isLoading, isError, refetch } = useQuery({
+    queryKey: ["yo-user-history", YOEUR_VAULT, address, limit, client?.chainId],
+    queryFn: () => {
+      if (!client || !address) throw new Error("Client or address not available");
+      return client.getUserHistory(YOEUR_VAULT, address, limit);
+    },
+    enabled: !!client && !!address,
+    staleTime: POLL_INTERVAL,
+    refetchInterval: POLL_INTERVAL,
+  });
 
   const items: TransactionItem[] = history.map((tx) => {
     const txType = String(tx.type).toLowerCase();
@@ -28,19 +43,25 @@ export function useTransactionHistory() {
     if (!isDeposit && !isWithdraw) {
       console.warn("[Manna] Unknown transaction type:", tx.type, tx);
     }
-    // Use formatted value from SDK when available, fallback to raw/1e6
     const amount = tx.assets?.formatted
       ? parseFloat(String(tx.assets.formatted))
       : parseFloat(formatUnits(BigInt(tx.assets?.raw ?? "0"), 6));
     return {
       id: tx.transactionHash ?? String(Math.random()),
       type: isDeposit ? "deposit" : "withdraw",
-      label: isDeposit ? "Bank Transfer In" : "Bank Transfer Out",
+      label: isDeposit ? "Deposit" : "Withdrawal",
       amountFloat: isDeposit ? amount : -amount,
       date: new Date(tx.blockTimestamp ? tx.blockTimestamp * 1000 : Date.now()),
       status: "confirmed" as const,
+      txHash: tx.transactionHash ?? "",
     };
   });
 
-  return { items, isLoading };
+  const hasMore = options?.paginated ? items.length >= limit : false;
+
+  const loadMore = useCallback(() => {
+    setLimit((prev) => prev + PAGE_SIZE);
+  }, []);
+
+  return { items, isLoading, isError, refetch, hasMore, loadMore };
 }

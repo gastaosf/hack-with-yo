@@ -3,10 +3,11 @@
 import CountUp from "react-countup";
 import { useYieldStats } from "@/hooks/useYieldStats";
 import { useEurBalance } from "@/hooks/useEurBalance";
+import { ErrorCard } from "@/components/shared/ErrorCard";
 import { Wallet } from "lucide-react";
 
 export function YieldSummary() {
-  const { apyPercent, yieldEarnedFloat, isLoading } = useYieldStats();
+  const { apyPercent, yieldEarnedFloat, isLoading, isError, refetch } = useYieldStats();
   const { balanceFloat, isLoading: balanceLoading } = useEurBalance();
 
   if (!isLoading && !balanceLoading && balanceFloat === 0) {
@@ -18,6 +19,10 @@ export function YieldSummary() {
         <p className="text-sm text-gray-400 text-center">Add funds to start earning</p>
       </div>
     );
+  }
+
+  if (isError && !isLoading) {
+    return <ErrorCard onRetry={refetch} />;
   }
 
   return (

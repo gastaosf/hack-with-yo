@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useDeposit } from "@yo-protocol/react";
 import { YOEUR_VAULT, EURC_ADDRESS, CHAIN_ID } from "@/lib/constants";
 import { parseEurAmount } from "@/lib/format";
@@ -17,6 +18,7 @@ type SepaStep =
   | "error";
 
 export function useSimulatedSepa() {
+  const queryClient = useQueryClient();
   const [step, setStep] = useState<SepaStep>("idle");
   const [amount, setAmount] = useState("");
   const [txHash, setTxHash] = useState<string | null>(null);
@@ -29,6 +31,7 @@ export function useSimulatedSepa() {
       setStep("depositing");
     },
     onConfirmed: () => {
+      queryClient.invalidateQueries();
       setStep("complete");
     },
     onError: (err) => {

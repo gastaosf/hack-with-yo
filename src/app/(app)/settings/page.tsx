@@ -75,6 +75,8 @@ export default function SettingsPage() {
   const router = useRouter();
   const { profile, saveProfile, isDemoAccount } = useCompanyProfile();
 
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
   const handleLogout = async () => {
     await logout();
     router.replace("/login");
@@ -148,7 +150,7 @@ export default function SettingsPage() {
 
         {/* Logout */}
         <button
-          onClick={handleLogout}
+          onClick={() => setShowLogoutConfirm(true)}
           className="flex items-center gap-3 w-full bg-white rounded-xl shadow-sm px-4 py-4 text-left active:scale-[0.98] transition-transform"
         >
           <LogOut size={16} className="text-red-400 shrink-0" />
@@ -160,6 +162,31 @@ export default function SettingsPage() {
           Manna v0.1.0 — Built for Hack with YO 2026
         </p>
       </div>
+
+      {showLogoutConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-2xl p-6 mx-6 w-full max-w-sm shadow-xl">
+            <h3 className="text-base font-bold text-[#0d1321] text-center">Sign out?</h3>
+            <p className="text-sm text-gray-400 text-center mt-2">
+              Are you sure you want to sign out of your account?
+            </p>
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => setShowLogoutConfirm(false)}
+                className="flex-1 rounded-xl py-3 text-sm font-semibold text-[#0d1321] bg-gray-100 active:scale-[0.98] transition-transform"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleLogout}
+                className="flex-1 rounded-xl py-3 text-sm font-semibold text-white bg-red-500 active:scale-[0.98] transition-transform"
+              >
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

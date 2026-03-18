@@ -7,7 +7,7 @@ import { formatUnits } from "viem";
 
 export function useEurBalance() {
   const { address } = useAccount();
-  const { position, isLoading, refetch } = useUserPosition(YOEUR_VAULT, address);
+  const { position, isLoading, isError, refetch } = useUserPosition(YOEUR_VAULT, address);
 
   const rawAssets: bigint = position?.assets ?? BigInt(0);
   const rawShares: bigint = position?.shares ?? BigInt(0);
@@ -21,6 +21,7 @@ export function useEurBalance() {
     sharesRaw: rawShares,
     hasBalance: sharesFloat > 0,
     isLoading,
+    isError,
     refetch,
   };
 }

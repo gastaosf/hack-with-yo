@@ -1,14 +1,21 @@
 "use client";
 
+import CountUp from "react-countup";
 import { useEurBalance } from "@/hooks/useEurBalance";
 import { useYieldStats } from "@/hooks/useYieldStats";
-import { formatEur, formatPercentage } from "@/lib/format";
+import { formatPercentage } from "@/lib/format";
+import { ErrorCard } from "@/components/shared/ErrorCard";
 import { TrendingUp } from "lucide-react";
 
 export function BalanceCard() {
-  const { balanceFloat, isLoading: balanceLoading } = useEurBalance();
-  const { apyPercent, isLoading: yieldLoading } = useYieldStats();
+  const { balanceFloat, isLoading: balanceLoading, isError: balanceError, refetch: refetchBalance } = useEurBalance();
+  const { apyPercent, isLoading: yieldLoading, isError: yieldError, refetch: refetchYield } = useYieldStats();
   const isLoading = balanceLoading || yieldLoading;
+  const isError = balanceError || yieldError;
+
+  if (isError && !isLoading) {
+    return <ErrorCard onRetry={() => { refetchBalance(); refetchYield(); }} />;
+  }
 
   return (
     <div className="relative overflow-hidden rounded-2xl bg-[#0d1321] px-6 pt-6 pb-8 text-white shadow-xl mx-4 mt-4">
@@ -29,7 +36,7 @@ export function BalanceCard() {
         ) : (
           <div className="balance-animate">
             <div className="text-4xl font-bold tabular tracking-tight">
-              {formatEur(balanceFloat)}
+              <CountUp end={balanceFloat} decimals={2} prefix="€" duration={1} preserveValue />
             </div>
             {apyPercent != null && balanceFloat > 0 && (
               <div className="flex items-center gap-1.5 mt-3">
