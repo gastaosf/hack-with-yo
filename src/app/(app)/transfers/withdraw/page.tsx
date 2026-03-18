@@ -3,11 +3,13 @@
 import { useState, useCallback } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useAccount, usePublicClient, useReadContract, useSendTransaction } from "wagmi";
+import { erc20Abi, maxUint256, encodeFunctionData } from "viem";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { AmountInput } from "@/components/transfers/AmountInput";
 import { useEurBalance } from "@/hooks/useEurBalance";
 import { useRedeem } from "@yo-protocol/react";
-import { YOEUR_VAULT, LINKED_BANK } from "@/lib/constants";
+import { YOEUR_VAULT, YO_GATEWAY, LINKED_BANK } from "@/lib/constants";
 import { formatEur } from "@/lib/format";
 import { sanitizeError } from "@/lib/errors";
 import { CheckCircle2, Loader2, Building2 } from "lucide-react";
@@ -22,7 +24,18 @@ export default function WithdrawPage() {
   const [txHash, setTxHash] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  const { address } = useAccount();
+  const publicClient = usePublicClient();
   const { balanceFloat, sharesRaw, isLoading: balanceLoading } = useEurBalance();
+  const { sendTransactionAsync } = useSendTransaction();
+
+  const { data: allowance } = useReadContract({
+    address: YOEUR_VAULT,
+    abi: erc20Abi,
+    functionName: "allowance",
+    args: [address!, YO_GATEWAY as `0x${string}`],
+    query: { enabled: !!address },
+  });
 
   const { redeem } = useRedeem({
     vault: YOEUR_VAULT,
@@ -40,17 +53,38 @@ export default function WithdrawPage() {
   const handleWithdraw = useCallback(async () => {
     setWStep("confirming");
     try {
-      // Calculate proportional shares for the requested amount
+      // Calculate proportional shares using bigint math to avoid floating-point errors
       const requestedAmount = parseFloat(amount);
-      const proportion = balanceFloat > 0 ? requestedAmount / balanceFloat : 0;
-      const sharesNum = typeof sharesRaw === "bigint" ? Number(sharesRaw) : parseFloat(String(sharesRaw)) * 1e6;
-      const sharesToRedeem = BigInt(Math.floor(sharesNum * proportion));
+      let sharesToRedeem: bigint;
+      if (requestedAmount >= balanceFloat) {
+        sharesToRedeem = sharesRaw;
+      } else {
+        const requestedMicro = BigInt(Math.floor(requestedAmount * 1e6));
+        const balanceMicro = BigInt(Math.floor(balanceFloat * 1e6));
+        sharesToRedeem = balanceMicro > 0n ? (sharesRaw * requestedMicro) / balanceMicro : 0n;
+      }
+
+      // Pre-approve gateway with max allowance so the SDK only sends 1 tx (redeem).
+      // This avoids a race condition where the SDK sends approve + redeem as 2 txs
+      // but the RPC hasn't indexed the approval by the time estimateGas runs for redeem.
+      if ((allowance ?? 0n) < sharesToRedeem) {
+        const approveHash = await sendTransactionAsync({
+          to: YOEUR_VAULT,
+          data: encodeFunctionData({
+            abi: erc20Abi,
+            functionName: "approve",
+            args: [YO_GATEWAY as `0x${string}`, maxUint256],
+          }),
+        });
+        await publicClient!.waitForTransactionReceipt({ hash: approveHash });
+      }
+
       await redeem(sharesToRedeem);
     } catch (err) {
       setError(sanitizeError(err));
       setWStep("error");
     }
-  }, [amount, balanceFloat, sharesRaw, redeem]);
+  }, [amount, balanceFloat, sharesRaw, redeem, allowance, sendTransactionAsync, publicClient]);
 
   const isAmountValid = amount && parseFloat(amount) > 0 && parseFloat(amount) <= balanceFloat;
 
