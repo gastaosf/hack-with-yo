@@ -1,8 +1,8 @@
 "use client";
 
+import CountUp from "react-countup";
 import { useYieldStats } from "@/hooks/useYieldStats";
 import { useEurBalance } from "@/hooks/useEurBalance";
-import { formatEur, formatPercentage } from "@/lib/format";
 import { Wallet } from "lucide-react";
 
 export function YieldSummary() {
@@ -30,7 +30,17 @@ export function YieldSummary() {
           <div className="skeleton h-6 w-16" />
         ) : (
           <p className="text-xl font-bold text-[#0d1321] tabular">
-            {apyPercent != null ? formatPercentage(apyPercent) : "—"}
+            {apyPercent != null ? (
+              <CountUp
+                end={apyPercent}
+                decimals={2}
+                suffix="%"
+                duration={1}
+                preserveValue
+              />
+            ) : (
+              "—"
+            )}
           </p>
         )}
         <p className="text-xs text-gray-400 mt-1">Automatically compounding</p>
@@ -44,7 +54,13 @@ export function YieldSummary() {
           <div className="skeleton h-6 w-20" />
         ) : (
           <p className="text-xl font-bold text-[#0d1321] tabular">
-            {formatEur(yieldEarnedFloat)}
+            <CountUp
+              end={yieldEarnedFloat}
+              decimals={4}
+              prefix="€"
+              duration={1}
+              preserveValue
+            />
           </p>
         )}
         <p className="text-xs text-gray-400 mt-1">Since first deposit</p>

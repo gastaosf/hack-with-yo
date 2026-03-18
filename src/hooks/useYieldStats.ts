@@ -1,15 +1,17 @@
 "use client";
 
 import { useAccount } from "wagmi";
-import { useUserPerformance, useYoClient } from "@yo-protocol/react";
+import { useYoClient } from "@yo-protocol/react";
 import { useQuery } from "@tanstack/react-query";
 import { YOEUR_VAULT } from "@/lib/constants";
+
+const REFETCH_INTERVAL = 10_000;
 
 export function useYieldStats() {
   const { address } = useAccount();
   const client = useYoClient();
 
-  // Vault snapshot for APY (contains stats.yield['30d'])
+  // Vault snapshot for APY — poll every 10s
   const { data: snapshot, isLoading: snapshotLoading } = useQuery({
     queryKey: ["yo-vault-snapshot", YOEUR_VAULT],
     queryFn: () => {
@@ -17,14 +19,26 @@ export function useYieldStats() {
       return client.getVaultSnapshot(YOEUR_VAULT);
     },
     enabled: !!client,
-    staleTime: 60_000,
+    staleTime: REFETCH_INTERVAL,
+    refetchInterval: REFETCH_INTERVAL,
   });
 
-  const { performance: userPerf, isLoading: userLoading } = useUserPerformance(YOEUR_VAULT, address);
+  // User performance — poll every 10s
+  const { data: userPerf, isLoading: userLoading } = useQuery({
+    queryKey: ["yo-user-performance", YOEUR_VAULT, address],
+    queryFn: () => {
+      if (!client || !address) throw new Error("Client or address not available");
+      return client.getUserPerformance(YOEUR_VAULT, address);
+    },
+    enabled: !!client && !!address,
+    staleTime: REFETCH_INTERVAL,
+    refetchInterval: REFETCH_INTERVAL,
+  });
 
   // APY from snapshot yield field (already a percentage, e.g. "2.3683" = 2.37%)
+  // Prefer 1d (most current), fall back to 7d then 30d
   const yieldData = snapshot?.stats?.yield;
-  const apyRaw = yieldData?.["30d"] ?? yieldData?.["7d"] ?? yieldData?.["1d"] ?? null;
+  const apyRaw = yieldData?.["1d"] ?? yieldData?.["7d"] ?? yieldData?.["30d"] ?? null;
   const baseApy = apyRaw != null ? parseFloat(String(apyRaw)) : null;
 
   // Add incentive rewards (merklRewardYield is a separate field)

@@ -1,6 +1,6 @@
 import { parseUnits } from "viem";
 
-export function formatEur(value: string | number): string {
+export function formatEur(value: string | number, decimals: number = 2): string {
   const num =
     typeof value === "string"
       ? parseFloat(value)
@@ -9,8 +9,8 @@ export function formatEur(value: string | number): string {
   return new Intl.NumberFormat("en-IE", {
     style: "currency",
     currency: "EUR",
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
   }).format(num);
 }
 
