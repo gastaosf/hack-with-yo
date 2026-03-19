@@ -6,7 +6,6 @@ import { useQuery } from "@tanstack/react-query";
 import { YOEUR_VAULT } from "@/lib/constants";
 
 const REFETCH_INTERVAL = 10_000;
-const DEFILLAMA_POOL_ID = "68ebb322-e83a-45b3-8cea-edd62cd1467b";
 
 export function useYieldStats() {
   const { address } = useAccount();
@@ -22,21 +21,6 @@ export function useYieldStats() {
     enabled: !!client,
     staleTime: REFETCH_INTERVAL,
     refetchInterval: REFETCH_INTERVAL,
-  });
-
-  // DefiLlama fallback for reward yield
-  const { data: llamaData } = useQuery({
-    queryKey: ["defillama-pool", DEFILLAMA_POOL_ID],
-    queryFn: async () => {
-      const res = await fetch(`https://yields.llama.fi/chart/${DEFILLAMA_POOL_ID}`);
-      if (!res.ok) return null;
-      const json = await res.json();
-      const points = json?.data;
-      if (!Array.isArray(points) || points.length === 0) return null;
-      return points[points.length - 1] as { apyReward?: number };
-    },
-    staleTime: 5 * 60_000, // 5 min — DefiLlama updates infrequently
-    refetchInterval: 5 * 60_000,
   });
 
   // User performance — poll every 10s
@@ -57,13 +41,10 @@ export function useYieldStats() {
   const apyRaw = yieldData?.["1d"] ?? yieldData?.["7d"] ?? yieldData?.["30d"] ?? null;
   const baseApy = apyRaw != null ? parseFloat(String(apyRaw)) : null;
 
-  // Reward yield: prefer merklRewardYield from snapshot, fall back to DefiLlama
-  const snapshotReward = snapshot?.stats?.merklRewardYield != null
+  // Reward yield from snapshot
+  const incentiveApy = snapshot?.stats?.merklRewardYield != null
     ? parseFloat(String(snapshot.stats.merklRewardYield))
     : 0;
-  const incentiveApy = snapshotReward > 0
-    ? snapshotReward
-    : (llamaData?.apyReward ?? 0);
 
   const apyPercent = baseApy != null ? baseApy + incentiveApy : null;
 
