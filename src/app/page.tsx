@@ -84,6 +84,9 @@ export default function LandingPage() {
     { name: "Lumis GmbH", desc: "Berlin · SaaS" },
     { name: "Arken BV", desc: "Amsterdam · E-commerce" },
     { name: "Solvera SRL", desc: "Milan · Manufacturing" },
+    { name: "Vantiq AG", desc: "Zurich · Fintech" },
+    { name: "Corelo OÜ", desc: "Tallinn · Logistics" },
+    { name: "Breva SA", desc: "Lisbon · Healthtech" },
   ];
 
   return (
@@ -186,7 +189,7 @@ export default function LandingPage() {
             </span>
             <div className="overflow-hidden flex-1">
               <div className="trust-marquee">
-                {[...trustItems, ...trustItems].map(({ name, desc }, i) => (
+                {trustItems.map(({ name, desc }, i) => (
                   <div key={`${name}-${i}`} className="flex items-center gap-1.5 shrink-0">
                     <span className="text-[14px] font-semibold text-[#0d1321]">
                       {name}
