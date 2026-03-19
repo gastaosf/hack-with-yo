@@ -87,3 +87,160 @@ body {
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
 }
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Scroll reveal ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-stagger > .reveal:nth-child(2) { transition-delay: 0.12s; }
+.reveal-stagger > .reveal:nth-child(3) { transition-delay: 0.24s; }
+
+/* ── Hero card float ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+.hero-card {
+  animation: float 5s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── Hero card ambient glow ── */
+.hero-glow {
+  position: absolute;
+  width: 340px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(78,201,155,0.20) 0%, transparent 70%);
+  filter: blur(60px);
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+/* ── Hero card shine sweep ── */
+@keyframes shine-sweep {
+  0%   { transform: translateX(-100%) rotate(15deg); }
+  100% { transform: translateX(200%) rotate(15deg); }
+}
+.hero-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.06) 45%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.06) 55%, transparent 60%);
+  animation: shine-sweep 4s ease-in-out infinite;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* ── Typography gradients ── */
+.gradient-text {
+  background: linear-gradient(135deg, #0d1321 0%, #1a3a5c 50%, #0d1321 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.gradient-accent {
+  background: linear-gradient(135deg, #2d9f6f, #4ec99b);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── CTA button hover shine ── */
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+.btn-shine::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.25) 50%, transparent 70%);
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+.btn-shine:hover::before {
+  left: 125%;
+}
+
+/* ── Trust bar marquee (mobile only) ── */
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.trust-marquee {
+  display: flex;
+  gap: 2rem;
+  animation: marquee 20s linear infinite;
+  width: max-content;
+}
+@media (min-width: 768px) {
+  .trust-marquee {
+    animation: none;
+    width: auto;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+}
+
+/* ── Dot pattern ── */
+.dot-pattern {
+  background-image: radial-gradient(circle, #d1d5c8 0.75px, transparent 0.75px);
+  background-size: 24px 24px;
+}
+
+/* ── Feature card gradient border on hover ── */
+.card-glow {
+  border: 1px solid #e4e4dc;
+  transition: all 0.3s ease;
+}
+.card-glow:hover {
+  border-color: transparent;
+  background-image: linear-gradient(white, white),
+                    linear-gradient(135deg, #2d9f6f33, #4ec99b22, transparent);
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+/* ── Animated dashed connector ── */
+@keyframes dash-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+/* ── Security section noise ── */
+.noise-overlay {
+  position: relative;
+}
+.noise-overlay::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  pointer-events: none;
+  z-index: 0;
+}
+.noise-overlay > * {
+  position: relative;
+  z-index: 1;
+}
+

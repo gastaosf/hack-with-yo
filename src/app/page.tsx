@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect } from "react";
 import {
   ArrowRight,
   TrendingUp,
@@ -12,42 +15,45 @@ import {
 
 function HeroCard() {
   return (
-    <div
-      className="rounded-[28px] shadow-2xl p-7 max-w-[360px] w-full"
-      style={{
-        background:
-          "linear-gradient(135deg, #0d1321 0%, #1a2f4a 60%, #1e3d3d 100%)",
-      }}
-    >
-      <div className="flex items-center justify-between mb-6">
-        <span className="text-[13px] text-white/60 uppercase tracking-[0.04em]">
-          Treasury Balance
-        </span>
-        <span className="text-white/20 text-sm font-bold">M</span>
-      </div>
-      <div className="text-[38px] font-bold text-white tabular-nums tracking-tight">
-        € 284,612.00
-      </div>
+    <div className="relative max-w-[360px] w-full">
+      <div className="hero-glow" />
       <div
-        className="mt-3 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] font-semibold text-[#4ec99b]"
-        style={{ background: "rgba(45,159,111,0.25)" }}
+        className="hero-card rounded-[28px] shadow-2xl p-7 w-full"
+        style={{
+          background:
+            "linear-gradient(135deg, #0d1321 0%, #1a2f4a 60%, #1e3d3d 100%)",
+        }}
       >
-        <TrendingUp size={14} />
-        15% Annual Return
-      </div>
-      <div className="mt-6 pt-4 border-t border-white/10 flex justify-between">
-        <div>
-          <div className="text-[11px] text-white/50 mb-1">
-            Earnings this month
-          </div>
-          <div className="text-[18px] font-semibold text-[#4ec99b] tabular-nums">
-            +€ 3,558.02
-          </div>
+        <div className="flex items-center justify-between mb-6">
+          <span className="text-[13px] text-white/60 uppercase tracking-[0.04em]">
+            Treasury Balance
+          </span>
+          <span className="text-white/20 text-sm font-bold">M</span>
         </div>
-        <div className="text-right">
-          <div className="text-[11px] text-white/50 mb-1">Projected annual</div>
-          <div className="text-[18px] font-semibold text-[#4ec99b] tabular-nums">
-            € 42,692
+        <div className="text-[38px] font-bold text-white tabular-nums tracking-tight">
+          € 284,612.00
+        </div>
+        <div
+          className="mt-3 inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] font-semibold text-[#4ec99b]"
+          style={{ background: "rgba(45,159,111,0.25)" }}
+        >
+          <TrendingUp size={14} />
+          <span className="gradient-accent">15% Annual Return</span>
+        </div>
+        <div className="mt-6 pt-4 border-t border-white/10 flex justify-between">
+          <div>
+            <div className="text-[11px] text-white/50 mb-1">
+              Earnings this month
+            </div>
+            <div className="text-[18px] font-semibold text-[#4ec99b] tabular-nums">
+              +€ 3,558.02
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-[11px] text-white/50 mb-1">Projected annual</div>
+            <div className="text-[18px] font-semibold text-[#4ec99b] tabular-nums">
+              € 42,692
+            </div>
           </div>
         </div>
       </div>
@@ -56,11 +62,35 @@ function HeroCard() {
 }
 
 export default function LandingPage() {
+  useEffect(() => {
+    const els = document.querySelectorAll(".reveal");
+    if (!els.length) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add("is-visible");
+            observer.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    els.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  const trustItems = [
+    { name: "Lumis GmbH", desc: "Berlin · SaaS" },
+    { name: "Arken BV", desc: "Amsterdam · E-commerce" },
+    { name: "Solvera SRL", desc: "Milan · Manufacturing" },
+  ];
+
   return (
     <div className="min-h-screen bg-[#fafaf5]">
       {/* Navbar */}
       <nav
-        className="fixed top-0 left-0 right-0 bg-white/95 border-b border-[#e4e4dc] z-50 backdrop-blur-sm"
+        className="fixed top-0 left-0 right-0 bg-white/95 border-b border-[#e4e4dc] z-50 backdrop-blur-md"
         role="navigation"
         aria-label="Main navigation"
       >
@@ -88,7 +118,7 @@ export default function LandingPage() {
             </Link>
             <Link
               href="/login"
-              className="inline-flex items-center gap-1.5 bg-[#2d9f6f] text-white text-[14px] font-semibold rounded-full px-4 py-2 hover:bg-[#1f7a52] hover:-translate-y-px transition-all shadow-[0_4px_16px_-4px_rgba(45,159,111,0.40)]"
+              className="btn-shine inline-flex items-center gap-1.5 bg-[#2d9f6f] text-white text-[14px] font-semibold rounded-full px-4 py-2 hover:bg-[#1f7a52] hover:-translate-y-px transition-all shadow-[0_4px_16px_-4px_rgba(45,159,111,0.40)]"
             >
               Get started
               <ArrowRight size={14} />
@@ -110,18 +140,19 @@ export default function LandingPage() {
             <div className="text-[13px] font-medium text-[#2d9f6f] uppercase tracking-[0.08em] mb-4">
               Treasury Management
             </div>
-            <h1 className="text-[40px] md:text-[56px] font-bold text-[#0d1321] leading-[1.15] tracking-tight">
+            <h1 className="gradient-text text-[40px] md:text-[56px] font-bold leading-[1.15] tracking-tight">
               Put your idle treasury cash to work
             </h1>
-            <p className="text-[16px] md:text-[18px] text-[#4b5563] mt-5 leading-relaxed max-w-[480px]">
-              Manna lets European companies earn up to 15% annual return on
+            <p className="text-[16px] md:text-[18px] text-[#4b5563] mt-5 leading-relaxed max-w-[480px] pl-4 border-l-2 border-[#2d9f6f]">
+              Manna lets European companies earn up to{" "}
+              <span className="gradient-accent font-semibold">15% annual return</span> on
               unused cash — via standard SEPA bank transfer, in minutes. No
               complexity, no lock-up, no surprises.
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
                 href="/login"
-                className="inline-flex items-center gap-2 bg-[#2d9f6f] text-white font-semibold text-[16px] rounded-full px-7 py-3.5 hover:bg-[#1f7a52] hover:-translate-y-px transition-all shadow-[0_4px_16px_-4px_rgba(45,159,111,0.40)]"
+                className="btn-shine inline-flex items-center gap-2 bg-[#2d9f6f] text-white font-semibold text-[16px] rounded-full px-7 py-3.5 hover:bg-[#1f7a52] hover:-translate-y-px transition-all shadow-[0_4px_16px_-4px_rgba(45,159,111,0.40)]"
               >
                 Start earning — it&apos;s free
                 <ArrowRight size={16} />
@@ -147,36 +178,34 @@ export default function LandingPage() {
       </section>
 
       {/* Trust bar */}
-      <section className="py-8 bg-white border-y border-[#e4e4dc]">
+      <section className="py-8 bg-white border-y border-[#e4e4dc] overflow-hidden">
         <div className="max-w-[1200px] mx-auto px-6">
-          <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-8 gap-y-3">
-            <span className="text-[12px] font-medium text-[#9ca3af] uppercase tracking-[0.04em] hidden md:block">
+          <div className="flex items-center gap-x-8 gap-y-3">
+            <span className="text-[12px] font-medium text-[#9ca3af] uppercase tracking-[0.04em] hidden md:block shrink-0">
               Trusted by finance teams across Europe
             </span>
-            {[
-              { name: "Lumis GmbH", desc: "Berlin · SaaS" },
-              { name: "Arken BV", desc: "Amsterdam · E-commerce" },
-              { name: "Solvera SRL", desc: "Milan · Manufacturing" },
-              { name: "Calder SA", desc: "Paris · Consulting" },
-              { name: "Nexway OÜ", desc: "Tallinn · FinTech" },
-            ].map(({ name, desc }) => (
-              <div key={name} className="flex items-center gap-1.5">
-                <span className="text-[14px] font-semibold text-[#0d1321]">
-                  {name}
-                </span>
-                <span className="text-[12px] text-[#9ca3af] hidden sm:block">
-                  {desc}
-                </span>
+            <div className="overflow-hidden flex-1">
+              <div className="trust-marquee">
+                {[...trustItems, ...trustItems].map(({ name, desc }, i) => (
+                  <div key={`${name}-${i}`} className="flex items-center gap-1.5 shrink-0">
+                    <span className="text-[14px] font-semibold text-[#0d1321]">
+                      {name}
+                    </span>
+                    <span className="text-[12px] text-[#9ca3af] hidden sm:block">
+                      {desc}
+                    </span>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Features */}
-      <section id="features" className="py-24 px-6 bg-[#fafaf5]">
+      <section id="features" className="py-24 px-6 bg-[#fafaf5] dot-pattern">
         <div className="max-w-[1200px] mx-auto">
-          <div className="text-center mb-12">
+          <div className="text-center mb-12 reveal">
             <div className="text-[12px] font-medium text-[#2d9f6f] uppercase tracking-[0.08em] mb-3">
               Why Finance Teams Choose Manna
             </div>
@@ -186,7 +215,7 @@ export default function LandingPage() {
               Nothing it doesn&apos;t.
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 reveal-stagger">
             {[
               {
                 icon: <TrendingUp size={24} className="text-[#2d9f6f]" />,
@@ -212,10 +241,10 @@ export default function LandingPage() {
             ].map(({ icon, iconBg, title, body, note }) => (
               <div
                 key={title}
-                className="bg-white rounded-[20px] border border-[#e4e4dc] shadow-[0_2px_8px_rgba(13,19,33,0.08)] p-8 hover:-translate-y-1 hover:shadow-[0_10px_32px_-4px_rgba(13,19,33,0.12)] transition-all duration-250"
+                className="reveal card-glow bg-white rounded-[20px] shadow-[0_1px_2px_rgba(13,19,33,0.06),0_4px_16px_rgba(13,19,33,0.08)] p-8 hover:-translate-y-1 hover:shadow-[0_1px_2px_rgba(13,19,33,0.06),0_4px_16px_rgba(13,19,33,0.08),0_16px_48px_-8px_rgba(13,19,33,0.12)] transition-all duration-300"
               >
                 <div
-                  className={`w-14 h-14 rounded-[14px] flex items-center justify-center mb-5 ${iconBg}`}
+                  className={`w-14 h-14 rounded-[14px] flex items-center justify-center mb-5 shadow-[inset_0_1px_3px_rgba(13,19,33,0.08)] ${iconBg}`}
                 >
                   {icon}
                 </div>
@@ -237,7 +266,7 @@ export default function LandingPage() {
       {/* How it works */}
       <section id="how-it-works" className="py-24 px-6 bg-white">
         <div className="max-w-[1200px] mx-auto">
-          <div className="text-center mb-16">
+          <div className="text-center mb-16 reveal">
             <div className="text-[12px] font-medium text-[#2d9f6f] uppercase tracking-[0.08em] mb-3">
               Getting Started
             </div>
@@ -245,7 +274,7 @@ export default function LandingPage() {
               Earning returns in three steps
             </h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 relative">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 relative reveal-stagger">
             {/* Connecting line */}
             <div className="hidden md:block absolute top-12 left-[calc(16.66%+32px)] right-[calc(16.66%+32px)] h-px border-t border-dashed border-[#e4e4dc]" />
             {[
@@ -265,8 +294,8 @@ export default function LandingPage() {
                 body: "Your balance starts earning immediately. View your daily accrual, request withdrawals, and manage your treasury from your dashboard.",
               },
             ].map(({ num, title, body }) => (
-              <div key={num} className="relative">
-                <div className="text-[56px] font-bold text-[#2d9f6f] leading-none mb-4">
+              <div key={num} className="relative reveal">
+                <div className="text-[56px] font-bold gradient-accent leading-none mb-4" style={{ fontWeight: 600 }}>
                   {num}
                 </div>
                 <h3 className="text-[18px] font-semibold text-[#0d1321] mb-3">
@@ -278,10 +307,10 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
-          <div className="text-center mt-12">
+          <div className="text-center mt-12 reveal">
             <Link
               href="/login"
-              className="inline-flex items-center gap-2 bg-[#2d9f6f] text-white font-semibold text-[16px] rounded-full px-7 py-3.5 hover:bg-[#1f7a52] transition-colors"
+              className="btn-shine inline-flex items-center gap-2 bg-[#2d9f6f] text-white font-semibold text-[16px] rounded-full px-7 py-3.5 hover:bg-[#1f7a52] transition-colors"
             >
               Get started — it&apos;s free →
             </Link>
@@ -290,10 +319,10 @@ export default function LandingPage() {
       </section>
 
       {/* Security */}
-      <section id="security" className="py-24 px-6 bg-[#0d1321]">
+      <section id="security" className="py-24 px-6 bg-[#0d1321] noise-overlay">
         <div className="max-w-[1200px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-start">
-            <div>
+            <div className="reveal">
               <div className="text-[12px] font-medium text-[#4ec99b] uppercase tracking-[0.08em] mb-4">
                 Security & Compliance
               </div>
@@ -309,14 +338,14 @@ export default function LandingPage() {
               </p>
               <a
                 href="https://exponential.fi/pools/yo-yoeur-vault-base/7abd13e6-51de-4660-a5e3-4b4042e15b15"
-		target="_blank"
-		rel="noopener noreferrer"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 mt-6 text-[15px] text-[#4ec99b] hover:text-white transition-colors"
               >
                 Read our security overview →
               </a>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 reveal-stagger">
               {[
                 {
                   icon: <ShieldCheck size={22} className="text-[#4ec99b]" />,
@@ -341,7 +370,7 @@ export default function LandingPage() {
               ].map(({ icon, title, body }) => (
                 <div
                   key={title}
-                  className="rounded-[16px] p-5"
+                  className="reveal rounded-[16px] p-5 hover:-translate-y-0.5 transition-all duration-300"
                   style={{
                     background: "#141c2e",
                     border: "1px solid rgba(255,255,255,0.08)",
@@ -363,15 +392,16 @@ export default function LandingPage() {
 
       {/* Final CTA */}
       <section
-        className="py-24 px-6"
+        className="py-24 px-6 dot-pattern"
         style={{
           background:
             "linear-gradient(160deg, #fafaf5 0%, #f0f5f2 50%, #e8f5ef 100%)",
         }}
       >
-        <div className="max-w-[680px] mx-auto text-center">
+        <div className="max-w-[680px] mx-auto text-center reveal">
           <h2 className="text-[32px] md:text-[44px] font-bold text-[#0d1321] tracking-tight leading-tight">
-            Your idle cash could be earning 15% today
+            Your idle cash could be earning{" "}
+            <span className="gradient-accent">15%</span> today
           </h2>
           <p className="text-[16px] md:text-[18px] text-[#4b5563] mt-4 leading-relaxed">
             Join 500+ European finance teams already using Manna. No lengthy
@@ -379,7 +409,7 @@ export default function LandingPage() {
           </p>
           <Link
             href="/login"
-            className="inline-flex items-center gap-2 mt-8 bg-[#2d9f6f] text-white font-semibold text-[16px] rounded-full px-8 py-4 hover:bg-[#1f7a52] hover:-translate-y-px transition-all shadow-[0_4px_16px_-4px_rgba(45,159,111,0.40)]"
+            className="btn-shine inline-flex items-center gap-2 mt-8 bg-[#2d9f6f] text-white font-semibold text-[16px] rounded-full px-8 py-4 hover:bg-[#1f7a52] hover:-translate-y-px transition-all shadow-[0_4px_16px_-4px_rgba(45,159,111,0.40)]"
           >
             Get started — it&apos;s free
             <ArrowRight size={16} />
