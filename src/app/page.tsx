@@ -7,7 +7,7 @@ import {
   ShieldCheck,
   Globe,
   Lock,
-  Clock,
+  BadgeCheck,
 } from "lucide-react";
 
 function HeroCard() {
@@ -33,7 +33,7 @@ function HeroCard() {
         style={{ background: "rgba(45,159,111,0.25)" }}
       >
         <TrendingUp size={14} />
-        3.8% Annual Return
+        15% Annual Return
       </div>
       <div className="mt-6 pt-4 border-t border-white/10 flex justify-between">
         <div>
@@ -41,13 +41,13 @@ function HeroCard() {
             Earnings this month
           </div>
           <div className="text-[18px] font-semibold text-[#4ec99b] tabular-nums">
-            +€ 897.42
+            +€ 3,558.02
           </div>
         </div>
         <div className="text-right">
           <div className="text-[11px] text-white/50 mb-1">Projected annual</div>
           <div className="text-[18px] font-semibold text-[#4ec99b] tabular-nums">
-            € 10,815
+            € 42,692
           </div>
         </div>
       </div>
@@ -72,11 +72,11 @@ export default function LandingPage() {
             <a href="#features" className="hover:text-[#0d1321] transition-colors">
               Product
             </a>
-            <a href="#security" className="hover:text-[#0d1321] transition-colors">
-              Security
-            </a>
             <a href="#how-it-works" className="hover:text-[#0d1321] transition-colors">
               How it works
+            </a>
+            <a href="#security" className="hover:text-[#0d1321] transition-colors">
+              Security
             </a>
           </div>
           <div className="flex items-center gap-3">
@@ -114,7 +114,7 @@ export default function LandingPage() {
               Put your idle treasury cash to work
             </h1>
             <p className="text-[16px] md:text-[18px] text-[#4b5563] mt-5 leading-relaxed max-w-[480px]">
-              Manna lets European companies earn up to 3.8% annual return on
+              Manna lets European companies earn up to 15% annual return on
               unused cash — via standard SEPA bank transfer, in minutes. No
               complexity, no lock-up, no surprises.
             </p>
@@ -191,7 +191,7 @@ export default function LandingPage() {
               {
                 icon: <TrendingUp size={24} className="text-[#2d9f6f]" />,
                 iconBg: "bg-[#e8f5ef]",
-                title: "Up to 3.8% annual return",
+                title: "Up to 15% annual return",
                 body: "Your idle treasury earns a competitive annual return — automatically, every day. No action needed after your initial transfer.",
                 note: "Returns shown are variable and may change.",
               },
@@ -308,7 +308,9 @@ export default function LandingPage() {
                 custodians and your data is protected under EU law.
               </p>
               <a
-                href="#"
+                href="https://exponential.fi/pools/yo-yoeur-vault-base/7abd13e6-51de-4660-a5e3-4b4042e15b15"
+		target="_blank"
+		rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 mt-6 text-[15px] text-[#4ec99b] hover:text-white transition-colors"
               >
                 Read our security overview →
@@ -332,9 +334,9 @@ export default function LandingPage() {
                   body: "256-bit encryption in transit and at rest. SOC 2 Type II audit in progress.",
                 },
                 {
-                  icon: <Clock size={22} className="text-[#4ec99b]" />,
-                  title: "No lock-up period",
-                  body: "Request a withdrawal at any time. Funds arrive in your business bank account within one business day.",
+                  icon: <TrendingUp size={22} className="text-[#4ec99b]" />,
+                  title: "Audited yield strategy",
+                  body: "Yield powered by YO Protocol\u2019s yoEUR vault \u2014 rated B (Good) by Exponential.fi.",
                 },
               ].map(({ icon, title, body }) => (
                 <div
@@ -369,7 +371,7 @@ export default function LandingPage() {
       >
         <div className="max-w-[680px] mx-auto text-center">
           <h2 className="text-[32px] md:text-[44px] font-bold text-[#0d1321] tracking-tight leading-tight">
-            Your idle cash could be earning 3.8% today
+            Your idle cash could be earning 15% today
           </h2>
           <p className="text-[16px] md:text-[18px] text-[#4b5563] mt-4 leading-relaxed">
             Join 500+ European finance teams already using Manna. No lengthy
